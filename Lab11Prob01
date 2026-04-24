@@ -1,0 +1,68 @@
+/**
+* File: Lab11Prob01.java
+* Class: CSCI 1302
+* Author: William Carter
+* Created on: Apr 24, 2026
+* Last Modified: Apr 24, 2026
+* Description: Binary I/O
+*/
+
+
+	import java.io.*;
+
+	public class Lab11Prob01 {
+
+	    public static void main(String[] args) {
+
+	        DataInputStream input = null;
+	        DataOutputStream output = null;
+
+	        try {
+	            // open input file
+	            input = new DataInputStream(
+	                    new FileInputStream("src/people.dat"));
+
+	            // open output file
+	            output = new DataOutputStream(
+	                    new FileOutputStream("src/people-copy.dat"));
+
+	            while (true) {
+	                // READ (must match exact order)
+	                int age = input.readInt();
+	                String name = input.readUTF();
+	                String address = input.readUTF();
+	                int zip = input.readInt();
+	                double salary = input.readDouble();
+
+	                // PRINT to console
+	                String line = String.format(
+	                	    "%d %s %s %d %.2f",
+	                	    age, name, address, zip, salary
+	                	);
+	                System.out.println(line);
+	                // WRITE exact copy
+	                output.writeInt(age);
+	                output.writeUTF(name);
+	                output.writeUTF(address);
+	                output.writeInt(zip);
+	                output.writeDouble(salary);
+	            }
+
+	        } catch (EOFException e) {
+	            // end of file reached (this is expected)
+	            
+
+	        } catch (IOException e) {
+	            System.out.println("Error: " + e.getMessage());
+
+	        } finally {
+	            try {
+	                if (input != null) input.close();
+	                if (output != null) output.close();
+	            } catch (IOException e) {
+	                System.out.println("Error closing files.");
+	            }
+	        }
+	    }
+	}
+
